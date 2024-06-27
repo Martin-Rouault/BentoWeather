@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 
 export const unixToTime = (unix: number, timezone: number) => {
-  console.log(unix, timezone);
   return dayjs
     .unix(unix)
     .utcOffset(timezone / 60)
