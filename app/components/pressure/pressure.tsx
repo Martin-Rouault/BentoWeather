@@ -1,31 +1,31 @@
 "use client";
 
 import { useGlobalContext } from "@/app/context/globalContext";
-import { formatPopulationNumber } from "@/app/utils/misc";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Population() {
-  const { dailyForecast } = useGlobalContext();
+export default function Pressure() {
+  const { dailyWeather } = useGlobalContext();
 
-  const { city } = dailyForecast;
+  const { main } = dailyWeather;
 
-  if (!dailyForecast || !city) {
+  if (!dailyWeather || !main) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
-
-  {city?.population === 0 ? city.population = "Unknown" : city.population = city.population}
 
   return (
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-8 shadow-sm dark:shadow-none">
       <div className="top">
         <h2 className="flex items-center gap-2 font-medium text-muted-foreground">
-          Population
+          Pressure
         </h2>
-        <p className="pt-4 text-2xl">{formatPopulationNumber(city?.population)}</p>
+        <p className="pt-4 text-2xl">{main?.pressure} hPa</p>
       </div>
       <p className="text-sm">
-        Latest population data for{" "}
-        <span className="font-medium">{city?.name}.</span>
+        {main.pressure < 1000
+          ? "Low pressure. Expect changes in the weather."
+          : main.pressure >= 1000 && main.pressure <= 1010
+          ? "Normal pressure. Typical weather conditions."
+          : "High pressure. Expect stable and clear weather."}
       </p>
     </div>
   );
