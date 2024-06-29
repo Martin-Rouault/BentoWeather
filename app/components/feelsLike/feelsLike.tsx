@@ -1,15 +1,14 @@
 "use client";
 
 import { useGlobalContext } from "@/app/context/globalContext";
-import { formatPopulationNumber } from "@/app/utils/misc";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Population() {
-  const { dailyForecast } = useGlobalContext();
+export default function FeelsLike() {
+  const { dailyWeather } = useGlobalContext();
 
-  const { city } = dailyForecast;
+  const { main } = dailyWeather;
 
-  if (!dailyForecast || !city) {
+  if (!dailyWeather || !main) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
@@ -17,13 +16,17 @@ export default function Population() {
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-8 shadow-sm dark:shadow-none">
       <div className="top">
         <h2 className="flex items-center gap-2 font-medium text-muted-foreground">
-          Population
+          Feels Like
         </h2>
-        <p className="pt-4 text-2xl">{formatPopulationNumber(city?.population)}</p>
+        <p className="pt-4 text-2xl">{main?.feels_like.toFixed(1)}°</p>
       </div>
       <p className="text-sm">
-        Latest population data for{" "}
-        <span className="font-medium">{city?.name}.</span>
+        {" "}
+        {main?.feels_like <= main?.temp
+          ? "Feels colder than the actual temperature"
+          : main?.feels_like >= main?.temp
+          ? "Feels warmer than the actual temperature"
+          : "Feels like the actual temperature"}
       </p>
     </div>
   );
