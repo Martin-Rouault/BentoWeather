@@ -5,6 +5,7 @@ import Sunset from "./components/sunset/sunset";
 import Wind from "./components/wind/wind";
 import DailyForecast from "./components/dailyForecast/dailyForecast";
 import Clouds from "./components/clouds/clouds";
+import Population from "./components/population/population";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
             <Wind />
             <DailyForecast />
             <Clouds />
+            <Population />
           </div>
         </div>
       </div>

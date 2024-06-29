@@ -7,6 +7,16 @@ export const unixToTime = (unix: number, timezone: number) => {
     .format("HH:mm");
 };
 
+export const formatPopulationNumber = (num: number) => {
+  if (num >= 1000000) {
+    return `${(num / 1000000).toFixed(1)}M`;
+  } else if (num >= 1000) {
+    return `${(num / 1000).toFixed(1)}K`;
+  } else {
+    return num;
+  }
+};
+
 export const airQualityIndexArray = [
   {
     rating: 10,
@@ -80,5 +90,3 @@ export const cloudsIndexArray = [
     description: "Overcast, fully cloudy.",
   },
 ];
-
-
