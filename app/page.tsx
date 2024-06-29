@@ -3,6 +3,7 @@ import Temperature from "./components/temperature/temperature";
 import AirQuality from "./components/airQuality/airQuality";
 import Sunset from "./components/sunset/sunset";
 import Wind from "./components/wind/wind";
+import DailyForecast from "./components/dailyForecast/dailyForecast";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
             <AirQuality />
             <Sunset />
             <Wind />
+            <DailyForecast />
           </div>
         </div>
       </div>
