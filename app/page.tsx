@@ -8,6 +8,7 @@ import Clouds from "./components/clouds/clouds";
 import Population from "./components/population/population";
 import FeelsLike from "./components/feelsLike/feelsLike";
 import Humidity from "./components/humidity/humidity";
+import Visibility from "./components/visibility/visibility";
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
             <Population />
             <FeelsLike />
             <Humidity />
+            <Visibility />
           </div>
         </div>
       </div>

@@ -3,29 +3,28 @@
 import { useGlobalContext } from "@/app/context/globalContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function FeelsLike() {
+export default function Visibility() {
   const { dailyWeather } = useGlobalContext();
 
-  const { main } = dailyWeather;
+  const { visibility } = dailyWeather;
 
-  if (!dailyWeather || !main) {
+  if (!dailyWeather || !visibility) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
-
   return (
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-8 shadow-sm dark:shadow-none">
       <div className="top">
         <h2 className="flex items-center gap-2 font-medium text-muted-foreground">
-          Feels Like
+          Visibility
         </h2>
-        <p className="pt-4 text-2xl">{main?.feels_like.toFixed(1)}°</p>
+        <p className="pt-4 text-2xl">{visibility / 1000} km</p>
       </div>
       <p className="text-sm">
-        {main?.feels_like <= main?.temp
-          ? "Feels colder than the actual temperature."
-          : main?.feels_like >= main?.temp
-          ? "Feels warmer than the actual temperature."
-          : "Feels like the actual temperature."}
+        {visibility / 1000 >= 10
+          ? "Perfect visibility."
+          : visibility / 1000 >= 5
+          ? "Good visibility."
+          : "Poor visibility, be carful wile driving!"}
       </p>
     </div>
   );
