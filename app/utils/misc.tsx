@@ -49,3 +49,36 @@ export const airQualityIndexArray = [
     description: "very poor",
   },
 ];
+
+export const cloudsIndexArray = [
+  {
+    rating: 0,
+    description: "Clear sky, no clouds.",
+  },
+  {
+    rating: 20,
+    description: "Mostly clear, few clouds.",
+  },
+  {
+    rating: 40,
+    description: "Partly cloudy.",
+  },
+  {
+    rating: 50,
+    description: "Half cloudy, half clear.",
+  },
+  {
+    rating: 70,
+    description: "Mostly cloudy.",
+  },
+  {
+    rating: 90,
+    description: "Very cloudy.",
+  },
+  {
+    rating: 100,
+    description: "Overcast, fully cloudy.",
+  },
+];
+
+

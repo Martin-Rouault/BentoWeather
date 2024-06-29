@@ -4,10 +4,11 @@ import AirQuality from "./components/airQuality/airQuality";
 import Sunset from "./components/sunset/sunset";
 import Wind from "./components/wind/wind";
 import DailyForecast from "./components/dailyForecast/dailyForecast";
+import Clouds from "./components/clouds/clouds";
 
 export default function Home() {
   return (
-    <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[16rem] m-auto">
+    <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[10rem] m-auto">
       <NavBar />
       <div className="pb-4 flex flex-col gap-4 md:flex-row">
         <div className="flex flex-col gap-4 w-full min-w-[18rem] md:w-[35rem]">
@@ -19,6 +20,7 @@ export default function Home() {
             <Sunset />
             <Wind />
             <DailyForecast />
+            <Clouds />
           </div>
         </div>
       </div>
