@@ -2,9 +2,8 @@
 
 import { useGlobalContext } from "@/app/context/globalContext";
 import Image from "next/image";
-import compass_arrow from "@/public/compass_arrow.svg";
-import compass_body from "@/public/compass_body.svg";
 import { Skeleton } from "@/components/ui/skeleton";
+import { WindIcon } from "lucide-react";
 
 export default function Wind() {
   const { dailyWeather } = useGlobalContext();
@@ -20,7 +19,7 @@ export default function Wind() {
     className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex 
   flex-col gap-3 shadow-sm dark:shadow-none"
   >
-    <h2 className="flex items-center gap-2 font-medium text-muted-foreground">Wind</h2>
+    <h2 className="flex items-center gap-2 font-medium text-muted-foreground"><WindIcon size={20} /> Wind</h2>
 
     <div className="compass relative flex items-center justify-center">
       <div className="image relative">

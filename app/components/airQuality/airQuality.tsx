@@ -4,6 +4,7 @@ import { useGlobalContext } from "@/app/context/globalContext";
 import { airQualityIndexArray } from "@/app/utils/misc";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SunDimIcon } from "lucide-react";
 
 export default function AirQuality() {
   const { airQuality } = useGlobalContext();
@@ -30,10 +31,12 @@ export default function AirQuality() {
       shadow-sm dark:shadow-none col-span-full sm-2:col-span-2 md:col-span-2 xl:col-span-2"
     >
       <h2 className="flex items-center gap-2 font-medium text-muted-foreground">
-        Air Pollution
+        <SunDimIcon size={20} />Air Pollution
       </h2>
       <Progress value={airQualityIndex} max={100} className="progress" />
-      <p className="text-sm">Air Quality is {filteredAirQualityIndex?.description}.</p>
+      <p className="text-sm">
+        Air Quality is {filteredAirQualityIndex?.description}.
+      </p>
     </div>
   );
 }

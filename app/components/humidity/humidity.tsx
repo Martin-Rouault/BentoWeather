@@ -2,6 +2,7 @@
 
 import { useGlobalContext } from "@/app/context/globalContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DropletsIcon } from "lucide-react";
 
 export default function Humidity() {
   const { dailyWeather } = useGlobalContext();
@@ -16,6 +17,7 @@ export default function Humidity() {
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-8 shadow-sm dark:shadow-none">
       <div className="top">
         <h2 className="flex items-center gap-2 font-medium text-muted-foreground">
+          <DropletsIcon size={20} />
           Humidity
         </h2>
         <p className="pt-4 text-2xl">{main.humidity}%</p>
