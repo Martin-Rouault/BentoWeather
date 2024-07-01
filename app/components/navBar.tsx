@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { github } from "../utils/icons";
 import { ThemeToggle } from "./themeToggle";
-import Search from "./search/search";
+import { Search } from "./search/search";
 
 export default function NavBar() {
   return (
