@@ -7,9 +7,9 @@ import { CloudIcon } from "lucide-react";
 export default function Clouds() {
   const { currentWeather } = useGlobalContext();
 
-  const { clouds } = currentWeather;
+  const { current } = currentWeather;
 
-  if (!currentWeather || !currentWeather?.clouds) {
+  if (!current || !current.clouds) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
@@ -20,24 +20,22 @@ export default function Clouds() {
           <CloudIcon size={20} />
           Clouds
         </h2>
-        <p className="pt-4 text-2xl">{clouds?.all}%</p>
+        <p className="pt-4 text-2xl">{current?.clouds}%</p>
       </div>
       <p className="text-sm">
-        {
-          (clouds.all === 100
-            ? "Overcast, fully cloudy."
-            : clouds.all < 100 && clouds.all >= 75
-            ? "Very cloudy."
-            : clouds.all < 75 && clouds.all >= 55
-            ? "Mostly cloudy."
-            : clouds.all < 55 && clouds.all > 45
-            ? "Half cloudy, half clear."
-            : clouds.all <= 45 && clouds.all >= 20
-            ? "Partly cloudy"
-            : clouds.all < 20 && clouds.all >= 10
-            ? "Mostly clear, few clouds."
-            : "Clear sky, no clouds")
-        }
+        {current.clouds === 100
+          ? "Overcast, fully cloudy."
+          : current.clouds < 100 && current.clouds >= 75
+          ? "Very cloudy."
+          : current.clouds < 75 && current.clouds >= 55
+          ? "Mostly cloudy."
+          : current.clouds < 55 && current.clouds > 45
+          ? "Half cloudy, half clear."
+          : current.clouds <= 45 && current.clouds >= 20
+          ? "Partly cloudy"
+          : current.clouds <= 20 && current.clouds >= 10
+          ? "Mostly clear, few clouds."
+          : "Clear sky, no clouds"}
       </p>
     </div>
   );
