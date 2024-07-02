@@ -7,9 +7,9 @@ import { ThermometerIcon } from "lucide-react";
 export default function FeelsLike() {
   const { currentWeather } = useGlobalContext();
 
-  const { main } = currentWeather;
-  
-  if (!currentWeather || !main) {
+  const { current } = currentWeather;
+
+  if (!current) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
@@ -20,12 +20,12 @@ export default function FeelsLike() {
           <ThermometerIcon size={20} />
           Feels Like
         </h2>
-        <p className="pt-4 text-2xl">{main?.feels_like.toFixed(1)}°</p>
+        <p className="pt-4 text-2xl">{current.feels_like.toFixed(1)}°</p>
       </div>
       <p className="text-sm">
-        {main?.feels_like <= main?.temp
+        {current.feels_like <= current.temp
           ? "Feels colder than the actual temperature."
-          : main?.feels_like >= main?.temp
+          : current.feels_like >= current.temp
           ? "Feels warmer than the actual temperature."
           : "Feels like the actual temperature."}
       </p>
