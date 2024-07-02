@@ -15,10 +15,6 @@ export default function DailyForecast() {
 
   const { hourly, timezone_offset } = currentWeather;
 
-  // const londonTz = dayjs.tz("Europe/London");
-
-  // console.log(londonTz);
-
   if (!hourly) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
