@@ -7,9 +7,9 @@ import { DropletsIcon } from "lucide-react";
 export default function Humidity() {
   const { currentWeather } = useGlobalContext();
 
-  const { main } = currentWeather;
+  const { current } = currentWeather;
 
-  if (!currentWeather || !main) {
+  if (!current) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
@@ -20,12 +20,12 @@ export default function Humidity() {
           <DropletsIcon size={20} />
           Humidity
         </h2>
-        <p className="pt-4 text-2xl">{main.humidity}%</p>
+        <p className="pt-4 text-2xl">{current.humidity}%</p>
       </div>
       <p className="text-sm">
-        {main.humidity < 40
+        {current.humidity < 40
           ? "Low humidity. It might feel dry."
-          : main.humidity < 70
+          : current.humidity < 70
           ? "Moderate humidity. Comfortable conditions."
           : "High humidity. It might feel humid."}
       </p>
