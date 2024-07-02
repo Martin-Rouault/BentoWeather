@@ -28,8 +28,8 @@ export default function Home() {
             <Sunset />
             <Wind />
             <DailyForecast />
-            <Clouds />
             <Population />
+            <Clouds />
             <FeelsLike />
             <Humidity />
             <Visibility />
