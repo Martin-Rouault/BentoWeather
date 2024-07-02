@@ -5,11 +5,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ThermometerIcon } from "lucide-react";
 
 export default function FeelsLike() {
-  const { dailyWeather } = useGlobalContext();
+  const { currentWeather } = useGlobalContext();
 
-  const { main } = dailyWeather;
-
-  if (!dailyWeather || !main) {
+  const { main } = currentWeather;
+  
+  if (!currentWeather || !main) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 

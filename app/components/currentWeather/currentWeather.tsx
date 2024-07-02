@@ -11,10 +11,10 @@ import Image from "next/image";
 dayjs.extend(utc);
 dayjs.extend(timezonePlugin);
 
-export default function Temperature() {
-  const { dailyWeather } = useGlobalContext();
+export default function CurrentWeather() {
+  const { currentWeather } = useGlobalContext();
 
-  const { main, timezone, name, sys, weather } = dailyWeather;
+  const { current, daily, timezone, timezone_offset } = currentWeather;
 
   const [currentDay, setCurrentDay] = useState("");
   const [currentTime, setCurrentTime] = useState("");
@@ -22,7 +22,7 @@ export default function Temperature() {
   useEffect(() => {
     const updateLocalTime = () => {
       // Convertir la timezone en minutes
-      const timeZoneOffSetInMinutes = timezone / 60;
+      const timeZoneOffSetInMinutes = timezone_offset / 60;
       // Obtenir l'heure locale en ajoutant la timezone à l'heure UTC
       const localTime = dayjs().utcOffset(timeZoneOffSetInMinutes);
       // Formater l'heure locale
@@ -37,10 +37,10 @@ export default function Temperature() {
     updateLocalTime(); // Mettre à jour immédiatement au montage du composant
 
     return () => clearInterval(interval);
-  }, [timezone]);
+  }, [timezone_offset]);
 
   // Vérifier si les données sont trouvées, si non afficher un message de chargement
-  if (!dailyWeather || !main || !timezone || !name || !sys || !weather) {
+  if (!currentWeather || !current || !daily || !timezone) {
     return (
       <div>
         <Skeleton className="h-96 w-full rounded-xl" />
@@ -58,23 +58,27 @@ export default function Temperature() {
         <span className="font-medium">{currentTime}</span>
       </p>
       <p className="pt-2 font-bold flex gap-1">
-        <span>{name}</span>
-        {/* <span>{sys.country}</span>/ */}
+        <span>{timezone}</span>
       </p>
       <p className="py-10 text-9xl font-bold self-center">
-        {main.temp.toFixed()}°
+        {current.temp.toFixed()}°
       </p>
 
       <div>
         <div>
-          <Image src={`mojoIcons/${weather[0].icon}.svg`} alt="weather icon" width="50" height="50" />
+          <Image
+            src={`mojoIcons/${current.weather[0].icon}.svg`}
+            alt="weather icon"
+            width="50"
+            height="50"
+          />
           <p className="pt-2 tracking-tight text-lg font-medium">
-            {weather[0].main}
+            {current.weather[0].main}
           </p>
         </div>
         <p className="flex items-center gap-2 text-muted-foreground">
-          <span>Min: {main.temp_min.toFixed()}°</span>
-          <span>Max: {main.temp_max.toFixed()}°</span>
+          <span>Min: {daily[0].temp.min.toFixed()}°</span>
+          <span>Max: {daily[0].temp.max.toFixed()}°</span>
         </p>
       </div>
     </div>

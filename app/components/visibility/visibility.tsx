@@ -5,11 +5,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EyeIcon } from "lucide-react";
 
 export default function Visibility() {
-  const { dailyWeather } = useGlobalContext();
+  const { currentWeather } = useGlobalContext();
 
-  const { visibility } = dailyWeather;
+  const { visibility } = currentWeather;
 
-  if (!dailyWeather || !visibility) {
+  if (!currentWeather || !visibility) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
   return (

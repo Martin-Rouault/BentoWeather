@@ -6,17 +6,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { HazeIcon } from "lucide-react";
 
 export default function Sunset() {
-  const { dailyWeather } = useGlobalContext();
+  const { currentWeather } = useGlobalContext();
 
-  if (!dailyWeather || !dailyWeather?.sys || !dailyWeather?.sys.sunset) {
+  const { current, timezone_offset } = currentWeather;
+
+  if (!currentWeather || !timezone_offset || !current) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
-  const times = dailyWeather?.sys?.sunset;
-  const timezone = dailyWeather?.timezone;
+  const times = current.sunset;
+  const timezone = timezone_offset;
 
   const sunsetTime = unixToTime(times, timezone);
-  const sunrise = unixToTime(dailyWeather?.sys?.sunrise, timezone);
+  const sunrise = unixToTime(current.sunrise, timezone);
 
   return (
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-8 shadow-sm dark:shadow-none">

@@ -9,7 +9,7 @@ const GlobalContext = createContext();
 const GlobalContextUpdate = createContext();
 
 export const GlobalContextProvider = ({ children }) => {
-  const [dailyWeather, setDailyWeather] = useState({});
+  const [currentWeather, setCurrentWeather] = useState({});
   const [airQuality, setAirQuality] = useState({});
   const [dailyForecast, setDailyForecast] = useState({});
 
@@ -20,10 +20,10 @@ export const GlobalContextProvider = ({ children }) => {
     51.752021, -1.257726,
   ]);
 
-  const getDailyWeather = async (lat, lon) => {
+  const getCurrentWeather = async (lat, lon) => {
     try {
       const res = await axios.get(`/api/weather?lat=${lat}&lon=${lon}`);
-      setDailyWeather(res.data);
+      setCurrentWeather(res.data);
     } catch (error) {
       console.log("Error fetching daily weather data: ", error.message);
     }
@@ -79,7 +79,7 @@ export const GlobalContextProvider = ({ children }) => {
   }, [inputValue]);
 
   useEffect(() => {
-    getDailyWeather(activeCityCoords[0], activeCityCoords[1]);
+    getCurrentWeather(activeCityCoords[0], activeCityCoords[1]);
     getAirQuality(activeCityCoords[0], activeCityCoords[1]);
     getDailyForecast(activeCityCoords[0], activeCityCoords[1]);
   }, [activeCityCoords]);
@@ -87,7 +87,7 @@ export const GlobalContextProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
-        dailyWeather,
+        currentWeather,
         airQuality,
         dailyForecast,
         geoCodedList,

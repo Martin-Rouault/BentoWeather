@@ -5,11 +5,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CloudIcon } from "lucide-react";
 
 export default function Clouds() {
-  const { dailyWeather } = useGlobalContext();
+  const { currentWeather } = useGlobalContext();
 
-  const { clouds } = dailyWeather;
+  const { clouds } = currentWeather;
 
-  if (!dailyWeather || !dailyWeather?.clouds) {
+  if (!currentWeather || !currentWeather?.clouds) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 

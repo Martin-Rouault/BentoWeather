@@ -5,11 +5,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { GaugeIcon } from "lucide-react";
 
 export default function Pressure() {
-  const { dailyWeather } = useGlobalContext();
+  const { currentWeather } = useGlobalContext();
 
-  const { main } = dailyWeather;
+  const { main } = currentWeather;
 
-  if (!dailyWeather || !main) {
+  if (!currentWeather || !main) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
