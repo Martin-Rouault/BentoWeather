@@ -5,7 +5,7 @@ import Sunset from "./components/sunset/sunset";
 import Wind from "./components/wind/wind";
 import DailyForecast from "./components/dailyForecast/dailyForecast";
 import Clouds from "./components/clouds/clouds";
-import Population from "./components/population/population";
+import UvIndex from "./components/uvIndex/uvIndex";
 import FeelsLike from "./components/feelsLike/feelsLike";
 import Humidity from "./components/humidity/humidity";
 import Visibility from "./components/visibility/visibility";
@@ -28,7 +28,7 @@ export default function Home() {
             <Sunset />
             <Wind />
             <DailyForecast />
-            <Population />
+            <UvIndex />
             <Clouds />
             <FeelsLike />
             <Humidity />
