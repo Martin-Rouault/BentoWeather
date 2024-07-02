@@ -1,23 +1,28 @@
 "use client";
 
 import { useGlobalContext } from "@/app/context/globalContext";
+import dayjs from "dayjs";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton";
-import dayjs from "dayjs";
 import Image from "next/image";
 
 export default function DailyForecast() {
-  const { dailyForecast } = useGlobalContext();
+  const { currentWeather } = useGlobalContext();
 
-  const { list } = dailyForecast;
+  const { hourly, timezone_offset } = currentWeather;
 
-  if (!dailyForecast || !list) {
+  // const londonTz = dayjs.tz("Europe/London");
+
+  // console.log(londonTz);
+
+  if (!hourly) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
+
   return (
     <div
       className="pt-6 px-4 h-[12rem] w-full border rounded-lg flex gap-8
@@ -27,23 +32,30 @@ export default function DailyForecast() {
         <div className="w-full">
           <Carousel>
             <CarouselContent>
-              {list.slice(0, 9).map((item, index) => (
-                <CarouselItem
-                  key={item.dt}
-                  className="flex flex-col gap-4 basis-[8.5rem] cursor-grab items-center"
-                >
-                  <p className="text-muted-foreground">
-                    {index === 0 ? "Now" : dayjs(item.dt_txt).format("HH:mm")}
-                  </p>
-                  <Image
-                    src={`mojoIcons/${item.weather[0].icon}.svg`}
-                    alt="weather icon"
-                    width="50"
-                    height="50"
-                  />
-                  <p className="text-sm">{item.main.temp.toFixed()}°</p>
-                </CarouselItem>
-              ))}
+              {/* TODO: add types for the item object(currentWeather) */}
+              {hourly.map((item, i: number) => {
+                const localTime = dayjs
+                  .unix(item.dt)
+                  .utcOffset(timezone_offset / 60)
+                  .format("HH:mm");
+                return (
+                  <CarouselItem
+                    key={item.dt}
+                    className="flex flex-col gap-4 basis-[8.5rem] cursor-grab items-center"
+                  >
+                    <p className="text-muted-foreground">
+                      {i === 0 ? "Now" : localTime}
+                    </p>
+                    <Image
+                      src={`mojoIcons/${item.weather[0].icon}.svg`}
+                      alt="weather icon"
+                      width="50"
+                      height="50"
+                    />
+                    <p className="text-sm">{item.temp.toFixed()}°</p>
+                  </CarouselItem>
+                );
+              })}
             </CarouselContent>
           </Carousel>
         </div>

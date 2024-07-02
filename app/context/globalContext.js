@@ -38,15 +38,6 @@ export const GlobalContextProvider = ({ children }) => {
     }
   };
 
-  const getDailyForecast = async (lat, lon) => {
-    try {
-      const res = await axios.get(`/api/daily-forecast?lat=${lat}&lon=${lon}`);
-      setDailyForecast(res.data);
-    } catch (error) {
-      console.log("Error fetching daily forecast data: ", error.message);
-    }
-  };
-
   const getGeoCodedList = async (search) => {
     try {
       const res = await axios.get(`/api/geocoded?search=${search}`);
@@ -81,7 +72,6 @@ export const GlobalContextProvider = ({ children }) => {
   useEffect(() => {
     getCurrentWeather(activeCityCoords[0], activeCityCoords[1]);
     getAirQuality(activeCityCoords[0], activeCityCoords[1]);
-    getDailyForecast(activeCityCoords[0], activeCityCoords[1]);
   }, [activeCityCoords]);
 
   return (
@@ -89,7 +79,6 @@ export const GlobalContextProvider = ({ children }) => {
       value={{
         currentWeather,
         airQuality,
-        dailyForecast,
         geoCodedList,
         inputValue,
         handleInput,

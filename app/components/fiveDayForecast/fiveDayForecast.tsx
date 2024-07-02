@@ -4,9 +4,9 @@ import { useGlobalContext } from "@/app/context/globalContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function FiveDayForecast() {
-  const { dailyForecast } = useGlobalContext();
+  const { currentWeather } = useGlobalContext();
 
-  if (!dailyForecast) {
+  if (!currentWeather) {
     return (
       <div>
         <Skeleton className="h-96 w-full rounded-xl" />
