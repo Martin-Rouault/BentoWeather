@@ -1,4 +1,3 @@
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -8,9 +7,13 @@ export async function GET(req: NextRequest) {
     const city = searchParams.get("search");
     const url = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${process.env.OPENWEATHERMAP_API_KEY}`;
 
-    const res = await axios.get(url);
+    const res = await fetch(url, {
+      next: { revalidate: 900 },
+    });
 
-    return NextResponse.json(res.data);
+    const data = await res.json();
+
+    return NextResponse.json(data);
   } catch (error) {
     console.log("Error fetching geocoded data: ", error);
     return new Response("Error fetching geocoded data", { status: 500 });

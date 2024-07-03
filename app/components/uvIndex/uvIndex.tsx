@@ -25,7 +25,7 @@ export default function UvIndex() {
           UV Index
         </h2>
       </div>
-      <p className="text-xl">
+      <div className="text-xl">
         {current?.uvi.toFixed()}
         <p>
           {current.uvi >= 11
@@ -38,7 +38,7 @@ export default function UvIndex() {
             ? "Moderate"
             : "Low"}
         </p>
-      </p>
+      </div>
       <div>
         <Progress value={uvIndex} max={110} className="progress" />
       </div>

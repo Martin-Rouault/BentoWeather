@@ -1,3 +1,5 @@
+"use client";
+
 import NavBar from "./components/navBar";
 import CurrentWeather from "./components/currentWeather/currentWeather";
 import AirQuality from "./components/airQuality/airQuality";
@@ -12,8 +14,22 @@ import Visibility from "./components/visibility/visibility";
 import Pressure from "./components/pressure/pressure";
 import MapBox from "./components/mapBox/mapBox";
 import FiveDayForecast from "./components/fiveDayForecast/fiveDayForecast";
+import { useGlobalContext } from "./context/globalContext";
+import defaultStates from "./utils/defaultStates";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
+  const { setActiveCityCoords } = useGlobalContext();
+
+  const getClickedCityCoords = (lat: number, lon: number) => {
+    setActiveCityCoords([lat, lon]);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[10rem] m-auto">
       <NavBar />
@@ -35,9 +51,28 @@ export default function Home() {
             <Visibility />
             <Pressure />
           </div>
-          <div className="mt-4 flex gap-4">
+          <div className="mt-4 flex flex-col md:flex-row gap-4">
             <MapBox />
-            <div className="flex flex-col gap-3 flex-1"></div>
+            <div className="flex flex-col gap-3 flex-1 px-4 pb-5 pt-6 shadow-sm dark:shadow-none border rounded-lg">
+              <h2 className="pb-4 flex items-center gap-2 font-medium text-muted-foreground">
+                Top Large Cities
+              </h2>
+              <div className="flex flex-col gap-3">
+                {defaultStates.map((state, i) => {
+                  return (
+                    <Button
+                      key={i}
+                      variant="outline"
+                      onClick={() => {
+                        getClickedCityCoords(state.lat, state.lon);
+                      }}
+                    >
+                      <p className="px-6 py-4">{state.name}</p>
+                    </Button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
