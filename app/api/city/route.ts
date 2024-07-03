@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const lat = searchParams.get("lat");
     const lon = searchParams.get("lon");
 
-    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&appid=${process.env.OPENWEATHERMAP_API_KEY}&units=metric`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.OPENWEATHERMAP_API_KEY}`;
 
     const res = await axios.get(url);
 

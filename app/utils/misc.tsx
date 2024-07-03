@@ -7,6 +7,13 @@ export const unixToTime = (unix: number, timezone: number) => {
     .format("HH:mm");
 };
 
+export const unixToday = (unix: number, timezone: number) => {
+  return dayjs
+    .unix(unix)
+    .utcOffset(timezone / 60)
+    .format("ddd");
+};
+
 export const formatPopulationNumber = (num: number) => {
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(1)}M`;

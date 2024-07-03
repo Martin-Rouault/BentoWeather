@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import { unixToTime } from "@/app/utils/misc";
 
 export default function DailyForecast() {
   const { currentWeather } = useGlobalContext();
@@ -30,10 +31,7 @@ export default function DailyForecast() {
             <CarouselContent>
               {/* TODO: add types for the item object(currentWeather) */}
               {hourly.map((item, i: number) => {
-                const localTime = dayjs
-                  .unix(item.dt)
-                  .utcOffset(timezone_offset / 60)
-                  .format("HH:mm");
+               const localTime = unixToTime(item.dt, timezone_offset);
                 return (
                   <CarouselItem
                     key={item.dt}

@@ -12,9 +12,11 @@ dayjs.extend(utc);
 dayjs.extend(timezonePlugin);
 
 export default function CurrentWeather() {
-  const { currentWeather } = useGlobalContext();
+  const { currentWeather, city } = useGlobalContext();
 
   const { current, daily, timezone, timezone_offset } = currentWeather;
+
+  const { name } = city ;
 
   const [currentDay, setCurrentDay] = useState("");
   const [currentTime, setCurrentTime] = useState("");
@@ -40,7 +42,7 @@ export default function CurrentWeather() {
   }, [timezone_offset]);
 
   // Vérifier si les données sont trouvées, si non afficher un message de chargement
-  if (!currentWeather || !current || !daily || !timezone) {
+  if (!currentWeather || !current || !daily || !timezone || !city || !name) {
     return (
       <div>
         <Skeleton className="h-96 w-full rounded-xl" />
@@ -58,7 +60,7 @@ export default function CurrentWeather() {
         <span className="font-medium">{currentTime}</span>
       </p>
       <p className="pt-2 font-bold flex gap-1">
-        <span>{timezone}</span>
+        <span>{name}</span>
       </p>
       <p className="py-10 text-9xl font-bold self-center">
         {current.temp.toFixed()}°

@@ -11,7 +11,7 @@ const GlobalContextUpdate = createContext();
 export const GlobalContextProvider = ({ children }) => {
   const [currentWeather, setCurrentWeather] = useState({});
   const [airQuality, setAirQuality] = useState({});
-  const [dailyForecast, setDailyForecast] = useState({});
+  const [city, setCity] = useState({});
 
   const [geoCodedList, setGeoCodedList] = useState(defaultStates);
   const [inputValue, setInputValue] = useState("");
@@ -26,6 +26,15 @@ export const GlobalContextProvider = ({ children }) => {
       setCurrentWeather(res.data);
     } catch (error) {
       console.log("Error fetching daily weather data: ", error.message);
+    }
+  };
+
+  const getCurrentCity = async (lat, lon) => {
+    try {
+      const res = await axios.get(`/api/city?lat=${lat}&lon=${lon}`);
+      setCity(res.data);
+    } catch (error) {
+      console.log("Error fetching city name: ", error.message);
     }
   };
 
@@ -72,12 +81,14 @@ export const GlobalContextProvider = ({ children }) => {
   useEffect(() => {
     getCurrentWeather(activeCityCoords[0], activeCityCoords[1]);
     getAirQuality(activeCityCoords[0], activeCityCoords[1]);
+    getCurrentCity(activeCityCoords[0], activeCityCoords[1]);
   }, [activeCityCoords]);
 
   return (
     <GlobalContext.Provider
       value={{
         currentWeather,
+        city,
         airQuality,
         geoCodedList,
         inputValue,
