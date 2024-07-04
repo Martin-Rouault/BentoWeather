@@ -94,4 +94,5 @@
 .leaflet-container {
   height: 24rem;
   width: calc(100% - 2rem);
+  z-index: 0;
 }
