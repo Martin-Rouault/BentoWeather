@@ -11,9 +11,8 @@ import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandList,
-  CommandItem,
+  CommandInput
 } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 
@@ -26,19 +25,8 @@ export function Search() {
 
   const getClickedCoords = (lat: number, lon: number) => {
     setActiveCityCoords([lat, lon]);
+    setOpen(false);
   };
-
-  // useEffect(() => {
-  //   const down = (e: KeyboardEvent) => {
-  //     if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
-  //       e.preventDefault();
-  //       setOpen((open) => !open);
-  //     }
-  //   };
-
-  //   document.addEventListener("keydown", down);
-  //   return () => document.removeEventListener("keydown", down);
-  // }, []);
 
   return (
     <div className="search-btn">
@@ -63,9 +51,8 @@ export function Search() {
         />
 
         <CommandList>
-          <CommandEmpty>No results found</CommandEmpty>
           <CommandGroup heading="Suggestions">
-            {geoCodedList &&
+            {geoCodedList && geoCodedList.length > 0 ? (
               geoCodedList.map(
                 (
                   item: {
@@ -82,20 +69,23 @@ export function Search() {
                     <div
                       key={index}
                       onMouseEnter={() => setHoveredIndex(index)}
-                      className={`py-3 px-2 text-sm  rounded-sm cursor-pointer
-                      ${hoveredIndex === index ? "bg-accent" : ""}
-                    `}
+                      className={`py-3 px-2 text-sm rounded-sm cursor-pointer ${
+                        hoveredIndex === index ? "bg-accent" : ""
+                      }`}
                       onClick={() => {
                         getClickedCoords(item.lat, item.lon);
                       }}
                     >
-                      <p className=" text">
+                      <p className="text">
                         {name}, {country}
                       </p>
                     </div>
                   );
                 }
-              )}
+              )
+            ) : (
+              <CommandEmpty>No results found</CommandEmpty>
+            )}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
