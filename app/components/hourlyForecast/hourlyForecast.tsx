@@ -1,7 +1,6 @@
 "use client";
 
 import { useGlobalContext } from "@/app/context/globalContext";
-import dayjs from "dayjs";
 import {
   Carousel,
   CarouselContent,
@@ -10,6 +9,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import { unixToTime } from "@/app/utils/misc";
+import { Hourly } from "@/app/lib/hourlyTypes";
 
 export default function DailyForecast() {
   const { currentWeather } = useGlobalContext();
@@ -29,24 +29,23 @@ export default function DailyForecast() {
         <div className="w-full">
           <Carousel>
             <CarouselContent>
-              {/* TODO: add types for the item object(currentWeather) */}
-              {hourly.map((item, i: number) => {
-               const localTime = unixToTime(item.dt, timezone_offset);
+              {hourly.map((hour: Hourly, i: number) => {
+                const localTime = unixToTime(hour.dt, timezone_offset);
                 return (
                   <CarouselItem
-                    key={item.dt}
+                    key={hour.dt}
                     className="flex flex-col gap-4 basis-[8.5rem] cursor-grab items-center"
                   >
                     <p className="text-muted-foreground">
                       {i === 0 ? "Now" : localTime}
                     </p>
                     <Image
-                      src={`mojoIcons/${item.weather[0].icon}.svg`}
+                      src={`mojoIcons/${hour.weather[0].icon}.svg`}
                       alt="weather icon"
                       width="50"
                       height="50"
                     />
-                    <p className="text-sm">{item.temp.toFixed()}°</p>
+                    <p className="text-sm">{hour.temp.toFixed()}°</p>
                   </CarouselItem>
                 );
               })}

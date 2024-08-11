@@ -2,20 +2,23 @@
 
 import axios from "axios";
 import React, { useContext, createContext, useState, useEffect } from "react";
-import defaultStates from "../utils/defaultStates";
 import { debounce } from "lodash";
+import { toast } from "sonner";
 
 const GlobalContext = createContext();
 const GlobalContextUpdate = createContext();
+
+const getCityFromLocalStorage = () => {
+  const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
+  return savedCities;
+};
 
 export const GlobalContextProvider = ({ children }) => {
   const [currentWeather, setCurrentWeather] = useState({});
   const [airQuality, setAirQuality] = useState({});
   const [city, setCity] = useState({});
-
-  const [geoCodedList, setGeoCodedList] = useState(defaultStates);
+  const [geoCodedList, setGeoCodedList] = useState(getCityFromLocalStorage());
   const [inputValue, setInputValue] = useState("");
-
   const [activeCityCoords, setActiveCityCoords] = useState([
     51.752021, -1.257726,
   ]);
@@ -24,6 +27,7 @@ export const GlobalContextProvider = ({ children }) => {
     try {
       const res = await axios.get(`/api/weather?lat=${lat}&lon=${lon}`);
       setCurrentWeather(res.data);
+      console.log(res.data);
     } catch (error) {
       console.log("Error fetching daily weather data: ", error.message);
     }
@@ -61,8 +65,37 @@ export const GlobalContextProvider = ({ children }) => {
     setInputValue(e.target.value);
 
     if (e.target.value === "") {
-      setGeoCodedList(defaultStates);
+      setGeoCodedList(getCityFromLocalStorage());
     }
+  };
+
+  const saveCity = (name, lat, lon) => {
+    const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
+
+    if (savedCities.length >= 5) {
+      toast.warning("You can only save up to 5 cities", {
+        position: "top-center",
+      });
+      return;
+    } else if (savedCities.some((city) => city.name === name)) {
+      toast.warning("City already saved", { position: "top-center" });
+      return;
+    }
+
+    const newCity = { name, lat, lon };
+    const newSavedCities = [...savedCities, newCity];
+    localStorage.setItem("savedCities", JSON.stringify(newSavedCities));
+    console.log(localStorage);
+    setGeoCodedList(newSavedCities);
+    toast.success("City saved successfully", { position: "top-center" });
+  };
+
+  const removeCityFromLocalStorage = (name) => {
+    const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
+    const newSavedCities = savedCities.filter((city) => city.name !== name);
+    localStorage.setItem("savedCities", JSON.stringify(newSavedCities));
+    setGeoCodedList(newSavedCities);
+    toast.success("City removed successfully", { position: "top-center" });
   };
 
   // debounce function
@@ -93,6 +126,9 @@ export const GlobalContextProvider = ({ children }) => {
         geoCodedList,
         inputValue,
         handleInput,
+        saveCity,
+        removeCityFromLocalStorage,
+        getCityFromLocalStorage,
         setActiveCityCoords,
       }}
     >

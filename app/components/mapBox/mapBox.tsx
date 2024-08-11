@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { useGlobalContext } from "@/app/context/globalContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function FlyToActiveCity({ lat, lon }) {
+function FlyToActiveCity({ lat, lon }: { lat: number; lon: number }) {
   const map = useMap();
 
   useEffect(() => {

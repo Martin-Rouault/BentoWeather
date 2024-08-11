@@ -1,6 +1,7 @@
 "use client";
 
 import { useGlobalContext } from "@/app/context/globalContext";
+import { Daily } from "@/app/lib/dailyTypes";
 import { unixToday } from "@/app/utils/misc";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,8 +25,7 @@ export default function FiveDayForecast() {
       <h2 className="flex items-center gap-2 font-medium text-muted-foreground">
         <CalendarDaysIcon size={20} />8 day forecast
       </h2>
-      {/* TODO: add type to day obj (dailyWeather) */}
-      {daily.map((day, i: number) => {
+      {daily.map((day: Daily, i: number) => {
         const localDay = unixToday(day.dt, timezone_offset);
         return (
           <div className="forecast-list" key={i}>

@@ -1,23 +1,34 @@
 "use client";
 
-import {
-  useGlobalContext,
-  useGlobalContextUpdate,
-} from "@/app/context/globalContext";
-import React, { useEffect, useState } from "react";
-import { commandIcon } from "@/app/utils/icons";
+import React, { useState } from "react";
+import { PinIcon, PinOffIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandList,
-  CommandInput
 } from "@/components/ui/command";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
+import {
+  useGlobalContext,
+  useGlobalContextUpdate,
+} from "@/app/context/globalContext";
 
 export function Search() {
-  const { geoCodedList, inputValue, handleInput } = useGlobalContext();
+  const {
+    geoCodedList,
+    inputValue,
+    handleInput,
+    saveCity,
+    removeCityFromLocalStorage,
+  } = useGlobalContext();
   const { setActiveCityCoords } = useGlobalContextUpdate();
 
   const [open, setOpen] = useState(false);
@@ -49,7 +60,6 @@ export function Search() {
           value={inputValue}
           onChange={handleInput}
         />
-
         <CommandList>
           <CommandGroup heading="Suggestions">
             {geoCodedList && geoCodedList.length > 0 ? (
@@ -64,21 +74,57 @@ export function Search() {
                   },
                   index: number
                 ) => {
-                  const { country, name } = item;
+                  const { country, name, lat, lon } = item;
                   return (
                     <div
+                      className="flex justify-between items-center"
                       key={index}
-                      onMouseEnter={() => setHoveredIndex(index)}
-                      className={`py-3 px-2 text-sm rounded-sm cursor-pointer ${
-                        hoveredIndex === index ? "bg-accent" : ""
-                      }`}
-                      onClick={() => {
-                        getClickedCoords(item.lat, item.lon);
-                      }}
                     >
-                      <p className="text">
-                        {name}, {country}
-                      </p>
+                      <div
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        className={`py-3 px-2 text-sm rounded-sm cursor-pointer ${
+                          hoveredIndex === index ? "bg-accent" : ""
+                        }`}
+                        onClick={() => {
+                          getClickedCoords(item.lat, item.lon);
+                        }}
+                      >
+                        <p className="text">
+                          {name} {country}
+                        </p>
+                      </div>
+                      <div className="center"></div>
+                      <div className="flex space-x-2 items-center">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant={"outline"}
+                                size={"icon"}
+                                onClick={() => saveCity(name, lat, lon)}
+                              >
+                                <PinIcon size={15} />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent sideOffset={1}>Add</TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant={"outline"}
+                                size={"icon"}
+                                onClick={() => removeCityFromLocalStorage(name)}
+                              >
+                                <PinOffIcon size={15} />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Delete</TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
                     </div>
                   );
                 }

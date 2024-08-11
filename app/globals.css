@@ -96,3 +96,7 @@
   width: calc(100% - 2rem);
   z-index: 0;
 }
+
+.toast {
+  z-index: 9999;
+}
