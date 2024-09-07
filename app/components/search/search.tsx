@@ -34,7 +34,7 @@ export function Search() {
   const [open, setOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = React.useState<number>(0);
 
-  const getClickedCoords = (lat: number, lon: number) => {
+  const GetClickedCoords = (lat: number, lon: number) => {
     setActiveCityCoords([lat, lon]);
     setOpen(false);
   };
@@ -86,7 +86,7 @@ export function Search() {
                           hoveredIndex === index ? "bg-accent" : ""
                         }`}
                         onClick={() => {
-                          getClickedCoords(item.lat, item.lon);
+                          GetClickedCoords(item.lat, item.lon);
                         }}
                       >
                         <p className="text">
