@@ -11,7 +11,6 @@ import FeelsLike from "./components/feelsLike/feelsLike";
 import Humidity from "./components/humidity/humidity";
 import Visibility from "./components/visibility/visibility";
 import Pressure from "./components/pressure/pressure";
-import MapBox from "./components/mapBox/mapBox";
 import FiveDayForecast from "./components/fiveDayForecast/fiveDayForecast";
 import HourlyForecast from "./components/hourlyForecast/hourlyForecast";
 import { useGlobalContext } from "./context/globalContext";
@@ -19,6 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { City } from "./lib/cityTypes";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+const MapBox = dynamic(() => import('./components/mapBox/mapBox'), { ssr: false })
 
 export default function Home() {
   const { setActiveCityCoords, getCityFromLocalStorage } = useGlobalContext();
