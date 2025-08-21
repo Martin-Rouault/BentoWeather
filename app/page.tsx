@@ -24,15 +24,16 @@ const MapBox = dynamic(() => import('./components/mapBox/mapBox'), { ssr: false 
 
 export default function Home() {
   const { setActiveCityCoords, getCityFromLocalStorage } = useGlobalContext();
-  const [savedCities, setSavedCities] = useState<City[]>([])
-  
-  useEffect(() => {
-    const cities = getCityFromLocalStorage()
-    setSavedCities(cities)
-  }, [getCityFromLocalStorage])
+
+  const savedCities = getCityFromLocalStorage()
   
   const getClickedCityCoords = (lat: number, lon: number) => {
     setActiveCityCoords([lat, lon]);
+    
+      window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
