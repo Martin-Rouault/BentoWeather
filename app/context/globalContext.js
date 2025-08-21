@@ -98,7 +98,6 @@ export const GlobalContextProvider = ({ children }) => {
     toast.success("City removed successfully", { position: "top-center" });
   };
 
-  // debounce function
   useEffect(() => {
     const debouncedFetch = debounce((search) => {
       getGeoCodedList(search);
