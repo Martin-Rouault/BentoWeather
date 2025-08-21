@@ -18,12 +18,17 @@ import { useGlobalContext } from "./context/globalContext";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { City } from "./lib/cityTypes";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const { setActiveCityCoords, getCityFromLocalStorage } = useGlobalContext();
-
-  const localCity = getCityFromLocalStorage();
-
+  const [savedCities, setSavedCities] = useState<City[]>([])
+  
+  useEffect(() => {
+    const cities = getCityFromLocalStorage()
+    setSavedCities(cities)
+  }, [getCityFromLocalStorage])
+  
   const getClickedCityCoords = (lat: number, lon: number) => {
     setActiveCityCoords([lat, lon]);
 
@@ -67,7 +72,7 @@ export default function Home() {
               </h2>
               <div className="flex flex-col gap-3">
 
-                {localCity.map((city: City, i: number) => {
+                {savedCities.map((city: City, i: number) => {
                   return (
                     <Button
                       key={i}
