@@ -9,19 +9,25 @@ const GlobalContext = createContext();
 const GlobalContextUpdate = createContext();
 
 const getCityFromLocalStorage = () => {
-  const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
-  return savedCities;
+  if (typeof window !== "undefined") {
+    return JSON.parse(localStorage.getItem("savedCities") || "[]");
+  }
+  return [];
 };
 
 export const GlobalContextProvider = ({ children }) => {
   const [currentWeather, setCurrentWeather] = useState({});
   const [airQuality, setAirQuality] = useState({});
   const [city, setCity] = useState({});
-  const [geoCodedList, setGeoCodedList] = useState(getCityFromLocalStorage());
+  const [geoCodedList, setGeoCodedList] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [activeCityCoords, setActiveCityCoords] = useState([
     51.752021, -1.257726,
   ]);
+
+  useEffect(() => {
+    setGeoCodedList(getCityFromLocalStorage)
+  }, [])
 
   const getCurrentWeather = async (lat, lon) => {
     try {
