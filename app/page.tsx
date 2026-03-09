@@ -17,7 +17,6 @@ import { useGlobalContext } from "./context/globalContext";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { City } from "./lib/cityTypes";
-import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 const MapBox = dynamic(() => import('./components/mapBox/mapBox'), { ssr: false })

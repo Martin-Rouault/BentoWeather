@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useGlobalContext } from "@/app/context/globalContext";
@@ -27,9 +27,15 @@ export default function MapBox() {
 
   const { lat, lon } = currentWeather;
 
-  if (!currentWeather || !lat || !lon) {
-    return <Skeleton className="h-96 w-full rounded-xl" />;
-  }
+    const [isMounted, setIsMounted] = useState(false);
+    
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted || !currentWeather || !lat || !lon) {
+        return <Skeleton className="h-96 w-full rounded-xl" />;
+    }
 
   return (
     <div className="flex-1 basis-[50%] border rounded-lg">

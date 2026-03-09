@@ -26,8 +26,11 @@ export const GlobalContextProvider = ({ children }) => {
   ]);
 
   useEffect(() => {
-    setGeoCodedList(getCityFromLocalStorage)
-  }, [])
+      const saved = getCityFromLocalStorage();
+      if (saved.length > 0) {
+          setGeoCodedList(saved);
+      }
+  }, []);
 
   const getCurrentWeather = async (lat, lon) => {
     try {
