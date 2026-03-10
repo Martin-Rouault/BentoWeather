@@ -1,10 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+
+import { useEffect, useState } from "react";
+import { AttributionControl, MapContainer, TileLayer, useMap } from "react-leaflet";
 import { useGlobalContext } from "@/app/context/globalContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "next-themes";
+import ZoomControls from "./zoomControls/zoomControls";
 
 export default function MapBox() {
 	const { currentWeather } = useGlobalContext();
@@ -16,26 +18,30 @@ export default function MapBox() {
 	const { resolvedTheme } = useTheme();
 
 	const whiteMap =
-		"https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
+		"https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
 	const blackMap =
-		"https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png";
+		"https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 
 	useEffect(() => {
 		setIsMounted(true);
 	}, []);
 
 	if (!isMounted || !currentWeather || !lat || !lon) {
-		return <Skeleton className="h-96 w-full rounded-xl flex items-center justify-center">NO DATA</Skeleton>;
+		return (
+			<Skeleton className="h-96 w-full rounded-xl flex items-center justify-center">
+				NO DATA
+			</Skeleton>
+		);
 	}
 
 	return (
 		<div className="flex-1 basis-[50%] border rounded-lg bg-primary-foreground">
-			<MapContainer center={[lat, lon]} zoom={13} className="m-4 rounded-lg">
+			<MapContainer center={[lat, lon]} zoom={13} className="m-4 rounded-lg" zoomControl={false}>
+				<ZoomControls />
 				<TileLayer
 					url={resolvedTheme === "dark" ? blackMap : whiteMap}
-					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">
-          OpenStreetMap</a> contributors'
 				/>
+				<AttributionControl prefix={false} />
 				<FlyToActiveCity lat={lat} lon={lon} />
 			</MapContainer>
 		</div>
@@ -47,7 +53,7 @@ function FlyToActiveCity({ lat, lon }: { lat: number; lon: number }) {
 
 	useEffect(() => {
 		if (lat && lon) {
-			const zoomLev = 13;
+			const zoomLev = 15;
 			const flyToOptions = {
 				duration: 1.5,
 			};
