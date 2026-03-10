@@ -34,7 +34,11 @@ export function Search() {
 
 	const [open, setOpen] = useState(false);
 
-	const GetClickedCoords = (item: { lat: number; lon: number; name: string }) => {
+	const GetClickedCoords = (item: {
+		lat: number;
+		lon: number;
+		name: string;
+	}) => {
 		const { lat, lon, name } = item;
 		const lastCityData = { name, lat, lon };
 		localStorage.setItem("last_viewed_city", JSON.stringify(lastCityData));
@@ -101,18 +105,17 @@ export function Search() {
 													<Tooltip>
 														<TooltipTrigger asChild>
 															<Button
-																variant={"secondary"}
-																className="hover:bg-white dark:hover:bg-neutral-500"
+																variant={"outline"}
 																size={"icon"}
 																onClick={(e) => {
 																	e.stopPropagation();
 																	saveCity(name, lat, lon);
 																}}
 															>
-																<PinIcon size={15} />
+																<PinIcon size={12} />
 															</Button>
 														</TooltipTrigger>
-														<TooltipContent sideOffset={1}>Add</TooltipContent>
+														<TooltipContent>Add</TooltipContent>
 													</Tooltip>
 												</TooltipProvider>
 
@@ -120,15 +123,14 @@ export function Search() {
 													<Tooltip>
 														<TooltipTrigger asChild>
 															<Button
-																variant={"secondary"}
-																className="hover:bg-white dark:hover:bg-neutral-500"
+																variant={"outline"}
 																size={"icon"}
 																onClick={(e) => {
 																	e.stopPropagation();
 																	removeCityFromLocalStorage(name);
 																}}
 															>
-																<PinOffIcon size={15} />
+																<PinOffIcon size={12} />
 															</Button>
 														</TooltipTrigger>
 														<TooltipContent>Delete</TooltipContent>
