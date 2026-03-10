@@ -15,6 +15,7 @@ import FiveDayForecast from "./components/fiveDayForecast/fiveDayForecast";
 import HourlyForecast from "./components/hourlyForecast/hourlyForecast";
 import { Toaster } from "@/components/ui/sonner";
 import dynamic from "next/dynamic";
+import Footer from "./components/footer/footer";
 
 const MapBox = dynamic(() => import("./components/mapBox/mapBox"), {
 	ssr: false,
@@ -57,6 +58,7 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</main>
 	);
 }
