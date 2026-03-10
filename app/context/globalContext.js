@@ -17,6 +17,7 @@ export const GlobalContextProvider = ({ children }) => {
 	const [geoCodedList, setGeoCodedList] = useState([]);
 	const [inputValue, setInputValue] = useState("");
 	const [activeCityCoords, setActiveCityCoords] = useState([48.8566, 2.3522]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		const lastViewed = localStorage.getItem("last_viewed_city");
@@ -24,7 +25,6 @@ export const GlobalContextProvider = ({ children }) => {
 		if (lastViewed) {
 			const parsedCity = JSON.parse(lastViewed);
 			setActiveCityCoords([parsedCity.lat, parsedCity.lon]);
-			setInputValue(parsedCity.name);
 		}
 
 		const saved = getCityFromLocalStorage();
@@ -76,15 +76,15 @@ export const GlobalContextProvider = ({ children }) => {
 		setInputValue(value);
 
 		if (value === "") {
-			setGeoCodedList(getCityFromLocalStorage());
+			setGeoCodedList([]);
 		}
 	};
 
-	const saveCity = (name, lat, lon) => {
+	const saveCity = (name, lat, lon, country, state) => {
 		const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
 
-		if (savedCities.length >= 5) {
-			toast.warning("You can only save up to 5 cities", {
+		if (savedCities.length >= 10) {
+			toast.warning("You can only save up to 10 cities", {
 				position: "top-center",
 			});
 			return;
@@ -93,7 +93,7 @@ export const GlobalContextProvider = ({ children }) => {
 			return;
 		}
 
-		const newCity = { name, lat, lon };
+		const newCity = { name, lat, lon, country, state };
 		const newSavedCities = [...savedCities, newCity];
 		localStorage.setItem("savedCities", JSON.stringify(newSavedCities));
 		console.log(localStorage);
@@ -118,8 +118,11 @@ export const GlobalContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		const debouncedFetch = debounce((search) => {
+			setIsLoading(false);
 			getGeoCodedList(search);
 		}, 500);
+
+		inputValue === "" ? setIsLoading(false) : setIsLoading(true);
 
 		if (inputValue) {
 			debouncedFetch(inputValue);
@@ -149,6 +152,7 @@ export const GlobalContextProvider = ({ children }) => {
 				removeCityFromLocalStorage,
 				getCityFromLocalStorage,
 				setActiveCityCoords,
+				isLoading
 			}}
 		>
 			<GlobalContextUpdate.Provider

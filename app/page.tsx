@@ -54,7 +54,6 @@ export default function Home() {
 					</div>
 					<div className="mt-4 flex flex-col md:flex-row gap-4 ">
 						<MapBox />
-						<Cities />
 					</div>
 				</div>
 			</div>

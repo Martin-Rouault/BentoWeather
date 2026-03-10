@@ -1,6 +1,16 @@
 import { useGlobalContext } from "@/app/context/globalContext";
 import type { City } from "@/app/lib/cityTypes";
+
 import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { FolderHeart } from "lucide-react";
 
 export default function Cities() {
 	const { setActiveCityCoords, getCityFromLocalStorage } = useGlobalContext();
@@ -12,25 +22,37 @@ export default function Cities() {
 	};
 
 	return (
-		<div className="flex flex-col gap-3 flex-1 px-4 pb-5 pt-6  shadow-sm dark:shadow-none border rounded-lg">
-			<h2 className="pb-4 flex items-center gap-2 font-medium text-muted-foreground">
-				Your cities
-			</h2>
-			<div className="flex flex-col gap-3">
-				{savedCities.map((city: City) => {
-					return (
-						<Button
-							key={`${city.lat}-${city.lon}`}
-							variant="outline"
-							onClick={() => {
-								getClickedCityCoords(city.lat, city.lon);
-							}}
-						>
-							<p className="px-6 py-4">{city.name}</p>
-						</Button>
-					);
-				})}
-			</div>
-		</div>
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button variant="outline">
+					<FolderHeart size={"icon"} />
+				</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuGroup>
+					<DropdownMenuLabel className="text-zinc-500">
+						Cities
+					</DropdownMenuLabel>
+					{savedCities.map((city: City) => {
+						return (
+							<DropdownMenuItem
+								className="cursor-pointer flex flex-col items-start gap-0.5 px-3 py-2"
+								key={`${city.lat}-${city.lon}`}
+								onClick={() => {
+									getClickedCityCoords(city.lat, city.lon);
+								}}
+							>
+								<div className="flex items-center gap-2">
+									<span className="font-medium">{city.name}</span>
+									<span className="text-xs text-muted-foreground uppercase">
+										{city.country}
+									</span>
+								</div>
+							</DropdownMenuItem>
+						);
+					})}
+				</DropdownMenuGroup>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	);
 }

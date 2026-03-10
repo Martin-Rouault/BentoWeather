@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { PinIcon, PinOffIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +21,7 @@ import {
 	useGlobalContext,
 	useGlobalContextUpdate,
 } from "@/app/context/globalContext";
+import { Spinner } from "@/components/ui/spinner";
 
 export function Search() {
 	const {
@@ -29,6 +30,7 @@ export function Search() {
 		handleInput,
 		saveCity,
 		removeCityFromLocalStorage,
+		isLoading,
 	} = useGlobalContext();
 	const { setActiveCityCoords } = useGlobalContextUpdate();
 
@@ -51,7 +53,7 @@ export function Search() {
 		<div className="search-btn">
 			<Button
 				variant={"outline"}
-				size={"lg"}
+				size={"default"}
 				onClick={() => setOpen(true)}
 				className="w-full whitespace-nowrap px-4"
 			>
@@ -72,7 +74,8 @@ export function Search() {
 				/>
 				<CommandList>
 					<CommandGroup heading="Suggestions">
-						{geoCodedList && geoCodedList.length > 0 ? (
+						{geoCodedList &&
+							geoCodedList.length > 0 &&
 							geoCodedList.map(
 								(item: {
 									name: string;
@@ -109,7 +112,7 @@ export function Search() {
 																size={"icon"}
 																onClick={(e) => {
 																	e.stopPropagation();
-																	saveCity(name, lat, lon);
+																	saveCity(name, lat, lon, country, state);
 																}}
 															>
 																<PinIcon size={12} />
@@ -140,7 +143,9 @@ export function Search() {
 										</CommandItem>
 									);
 								},
-							)
+							)}
+						{isLoading ? (
+							<Spinner className="m-auto my-2" />
 						) : (
 							<CommandEmpty>No results found</CommandEmpty>
 						)}
