@@ -1,154 +1,165 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 "use client";
 
 import axios from "axios";
-import React, { useContext, createContext, useState, useEffect } from "react";
-import { debounce } from "lodash";
+
+import { useContext, createContext, useState, useEffect } from "react";
 import { toast } from "sonner";
+import { debounce } from "lodash";
 
 const GlobalContext = createContext();
 const GlobalContextUpdate = createContext();
 
-const getCityFromLocalStorage = () => {
-  if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem("savedCities") || "[]");
-  }
-  return [];
-};
-
 export const GlobalContextProvider = ({ children }) => {
-  const [currentWeather, setCurrentWeather] = useState({});
-  const [airQuality, setAirQuality] = useState({});
-  const [city, setCity] = useState({});
-  const [geoCodedList, setGeoCodedList] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const [activeCityCoords, setActiveCityCoords] = useState([
-    51.752021, -1.257726,
-  ]);
+	const [currentWeather, setCurrentWeather] = useState({});
+	const [airQuality, setAirQuality] = useState({});
+	const [city, setCity] = useState({});
+	const [geoCodedList, setGeoCodedList] = useState([]);
+	const [inputValue, setInputValue] = useState("");
+	const [activeCityCoords, setActiveCityCoords] = useState([48.8566, 2.3522]);
 
-  useEffect(() => {
-      const saved = getCityFromLocalStorage();
-      if (saved.length > 0) {
-          setGeoCodedList(saved);
-      }
-  }, []);
+	useEffect(() => {
+		const lastViewed = localStorage.getItem("last_viewed_city");
 
-  const getCurrentWeather = async (lat, lon) => {
-    try {
-      const res = await axios.get(`/api/weather?lat=${lat}&lon=${lon}`);
-      setCurrentWeather(res.data);
-      console.log(res.data);
-    } catch (error) {
-      console.log("Error fetching daily weather data: ", error.message);
-    }
-  };
+		if (lastViewed) {
+			const parsedCity = JSON.parse(lastViewed);
+			setActiveCityCoords([parsedCity.lat, parsedCity.lon]);
+			setInputValue(parsedCity.name);
+		}
 
-  const getCurrentCity = async (lat, lon) => {
-    try {
-      const res = await axios.get(`/api/city?lat=${lat}&lon=${lon}`);
-      setCity(res.data);
-    } catch (error) {
-      console.log("Error fetching city name: ", error.message);
-    }
-  };
+		const saved = getCityFromLocalStorage();
+		if (saved.length > 0) {
+			setGeoCodedList(saved);
+		}
+	}, []);
 
-  const getAirQuality = async (lat, lon) => {
-    try {
-      const res = await axios.get(`/api/air-quality?lat=${lat}&lon=${lon}`);
-      setAirQuality(res.data);
-    } catch (error) {
-      console.log("Error fetching air pollution data: ", error.message);
-    }
-  };
+	const getCurrentWeather = async (lat, lon) => {
+		try {
+			const res = await axios.get(`/api/weather?lat=${lat}&lon=${lon}`);
+			setCurrentWeather(res.data);
+			console.log(res.data);
+		} catch (error) {
+			console.log("Error fetching daily weather data: ", error.message);
+		}
+	};
 
-  const getGeoCodedList = async (search) => {
-    try {
-      const res = await axios.get(`/api/geocoded?search=${search}`);
-      setGeoCodedList(res.data);
-    } catch (error) {
-      console.log("Error fetching geocoded list: ", error.message);
-    }
-  };
+	const getCurrentCity = async (lat, lon) => {
+		try {
+			const res = await axios.get(`/api/city?lat=${lat}&lon=${lon}`);
+			setCity(res.data);
+			console.log(res.data);
+		} catch (error) {
+			console.log("Error fetching city name: ", error.message);
+		}
+	};
 
-  // handle input
-  const handleInput = (e) => {
-    setInputValue(e.target.value);
+	const getAirQuality = async (lat, lon) => {
+		try {
+			const res = await axios.get(`/api/air-quality?lat=${lat}&lon=${lon}`);
+			setAirQuality(res.data);
+		} catch (error) {
+			console.log("Error fetching air pollution data: ", error.message);
+		}
+	};
 
-    if (e.target.value === "") {
-      setGeoCodedList(getCityFromLocalStorage());
-    }
-  };
+	const getGeoCodedList = async (search) => {
+		try {
+			const res = await axios.get(`/api/geocoded?search=${search}`);
+			setGeoCodedList(res.data);
+			console.log(res.data)
+		} catch (error) {
+			console.log("Error fetching geocoded list: ", error.message);
+		}
+	};
 
-  const saveCity = (name, lat, lon) => {
-    const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
+	const handleInput = (value) => {
+		setInputValue(value);
 
-    if (savedCities.length >= 5) {
-      toast.warning("You can only save up to 5 cities", {
-        position: "top-center",
-      });
-      return;
-    } else if (savedCities.some((city) => city.name === name)) {
-      toast.warning("City already saved", { position: "top-center" });
-      return;
-    }
+		if (value === "") {
+			setGeoCodedList(getCityFromLocalStorage());
+		}
+	};
 
-    const newCity = { name, lat, lon };
-    const newSavedCities = [...savedCities, newCity];
-    localStorage.setItem("savedCities", JSON.stringify(newSavedCities));
-    console.log(localStorage);
-    setGeoCodedList(newSavedCities);
-    toast.success("City saved successfully", { position: "top-center" });
-  };
+	const saveCity = (name, lat, lon) => {
+		const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
 
-  const removeCityFromLocalStorage = (name) => {
-    const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
-    const newSavedCities = savedCities.filter((city) => city.name !== name);
-    localStorage.setItem("savedCities", JSON.stringify(newSavedCities));
-    setGeoCodedList(newSavedCities);
-    toast.success("City removed successfully", { position: "top-center" });
-  };
+		if (savedCities.length >= 5) {
+			toast.warning("You can only save up to 5 cities", {
+				position: "top-center",
+			});
+			return;
+		} else if (savedCities.some((city) => city.name === name)) {
+			toast.warning("City already saved", { position: "top-center" });
+			return;
+		}
 
-  useEffect(() => {
-    const debouncedFetch = debounce((search) => {
-      getGeoCodedList(search);
-    }, 500);
+		const newCity = { name, lat, lon };
+		const newSavedCities = [...savedCities, newCity];
+		localStorage.setItem("savedCities", JSON.stringify(newSavedCities));
+		console.log(localStorage);
+		setGeoCodedList(newSavedCities);
+		toast.success("City saved successfully", { position: "top-center" });
+	};
 
-    if (inputValue) {
-      debouncedFetch(inputValue);
-    }
-    // cleanup
-    return () => debouncedFetch.cancel();
-  }, [inputValue]);
+	const getCityFromLocalStorage = () => {
+		if (typeof window !== "undefined") {
+			return JSON.parse(localStorage.getItem("savedCities") || "[]");
+		}
+		return [];
+	};
 
-  useEffect(() => {
-    getCurrentWeather(activeCityCoords[0], activeCityCoords[1]);
-    getAirQuality(activeCityCoords[0], activeCityCoords[1]);
-    getCurrentCity(activeCityCoords[0], activeCityCoords[1]);
-  }, [activeCityCoords]);
+	const removeCityFromLocalStorage = (name) => {
+		const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
+		const newSavedCities = savedCities.filter((city) => city.name !== name);
+		localStorage.setItem("savedCities", JSON.stringify(newSavedCities));
+		setGeoCodedList(newSavedCities);
+		toast.success("City removed successfully", { position: "top-center" });
+	};
 
-  return (
-    <GlobalContext.Provider
-      value={{
-        currentWeather,
-        city,
-        airQuality,
-        geoCodedList,
-        inputValue,
-        handleInput,
-        saveCity,
-        removeCityFromLocalStorage,
-        getCityFromLocalStorage,
-        setActiveCityCoords,
-      }}
-    >
-      <GlobalContextUpdate.Provider
-        value={{
-          setActiveCityCoords,
-        }}
-      >
-        {children}
-      </GlobalContextUpdate.Provider>
-    </GlobalContext.Provider>
-  );
+	useEffect(() => {
+		const debouncedFetch = debounce((search) => {
+			getGeoCodedList(search);
+		}, 500);
+
+		if (inputValue) {
+			debouncedFetch(inputValue);
+		}
+		// cleanup
+		return () => debouncedFetch.cancel();
+	}, [inputValue]);
+
+	useEffect(() => {
+		if(activeCityCoords) {
+			getCurrentWeather(activeCityCoords[0], activeCityCoords[1]);
+			getAirQuality(activeCityCoords[0], activeCityCoords[1]);
+			getCurrentCity(activeCityCoords[0], activeCityCoords[1]);
+		}
+	}, [activeCityCoords]);
+
+	return (
+		<GlobalContext.Provider
+			value={{
+				currentWeather,
+				city,
+				airQuality,
+				geoCodedList,
+				inputValue,
+				handleInput,
+				saveCity,
+				removeCityFromLocalStorage,
+				getCityFromLocalStorage,
+				setActiveCityCoords,
+			}}
+		>
+			<GlobalContextUpdate.Provider
+				value={{
+					setActiveCityCoords,
+				}}
+			>
+				{children}
+			</GlobalContextUpdate.Provider>
+		</GlobalContext.Provider>
+	);
 };
 
 export const useGlobalContext = () => useContext(GlobalContext);

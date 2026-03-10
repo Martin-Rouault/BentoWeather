@@ -1,15 +1,18 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import { Spinner } from "./spinner";
 
 function Skeleton({
-  className,
-  ...props
+	className,
+	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={cn("animate-pulse rounded-md bg-muted", className)}
-      {...props}
-    />
-  )
+	return (
+		<div
+			className={cn("animate-pulse rounded-md bg-muted flex items-center justify-center", className)}
+			{...props}
+		>
+			<Spinner />
+		</div>
+	);
 }
 
-export { Skeleton }
+export { Skeleton };

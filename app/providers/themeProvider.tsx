@@ -6,9 +6,9 @@ import { type ThemeProviderProps } from "next-themes/dist/types";
 import { GlobalContextProvider } from "@/app/context/globalContext";
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return (
-    <NextThemesProvider {...props}>
-      <GlobalContextProvider>{children}</GlobalContextProvider>
-    </NextThemesProvider>
-  );
+	return (
+		<NextThemesProvider {...props}>
+			<GlobalContextProvider>{children}</GlobalContextProvider>
+		</NextThemesProvider>
+	);
 }

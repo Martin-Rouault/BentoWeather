@@ -1,7 +1,7 @@
 interface City {
-  lat: number;
-  lon: number;
-  name: string;
+	lat: number;
+	lon: number;
+	name: string;
 }
 
 export type { City };
